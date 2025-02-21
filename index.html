@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memory Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #7f8c8d;
+            padding: 50px;
+        }
+        h1 {
+            color: #ffffff;
+        }
+        .button {
+            display: block;
+            width: 200px;
+            margin: 20px auto;
+            padding: 15px;
+            font-size: 20px;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .button.blue {
+            background-color: #3498db;
+        }
+        .button.blue:hover {
+            background-color: #2980b9;
+        }
+        .button.red {
+            background-color: #e74c3c;
+        }
+        .button.red:hover {
+            background-color: #c0392b;
+        }
+    </style>
+</head>
+<body>
+    <h1>Memory Game</h1>
+    <button class="button blue" onclick="location.href='solo.html'">One Player</button>
+    <button class="button red" onclick="location.href='multiplayer.html'">Two Players</button>
+</body>
+</html>
