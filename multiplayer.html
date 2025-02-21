@@ -87,6 +87,20 @@
             cursor: pointer;
             font-size: 18px;
         }
+
+        /* Responsividade */
+        @media (max-width: 600px) {
+            .game-board {
+                grid-template-columns: repeat(6, 60px); /* Mantém 6 cartas por linha */
+                gap: 5px;
+            }
+
+            .card {
+                width: 60px;
+                height: 60px;
+                font-size: 20px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -191,11 +205,6 @@
                     }
                 }, 500);
             }
-        }
-
-        function speak(animalName) {
-            const audio = new Audio(`sons/${animalName}.mp3`);
-            audio.play();
         }
 
         function restartGame() {

@@ -54,7 +54,7 @@
             background-color: #3498db;
         }
         .card.matched {
-            background-color: #2ecc71; /* Fundo verde ao encontrar par */
+            background-color: #2ecc71;
             cursor: default;
         }
         .score {
@@ -72,6 +72,20 @@
             border-radius: 5px;
             cursor: pointer;
             font-size: 18px;
+        }
+
+        /* Responsividade */
+        @media (max-width: 600px) {
+            .game-board {
+                grid-template-columns: repeat(6, 60px); /* Mantém 6 cartas por linha */
+                gap: 5px;
+            }
+
+            .card {
+                width: 60px;
+                height: 60px;
+                font-size: 20px;
+            }
         }
     </style>
 </head>
@@ -139,7 +153,6 @@
                 firstCard.classList.add("matched");
                 secondCard.classList.add("matched");
 
-                // Reproduzir o som do par encontrado
                 playAnimalSound(firstCard.dataset.name);
 
                 firstCard = null;
