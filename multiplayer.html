@@ -104,10 +104,11 @@
     <h1>Memory Game - Multiplayer</h1>
     <div class="game-board" id="gameBoard"></div>
     <div class="scoreboard">
-        <div id="player1" class="player player1 active">Player 1: <span id="player1Score">0</span> points</div>
-        <div id="player2" class="player player2">Player 2: <span id="player2Score">0</span> points</div>
+        <div id="player1" class="player player1 active">Player 1: <span id="player1Score">0</span> pontos</div>
+        <div id="player2" class="player player2">Player 2: <span id="player2Score">0</span> pontos</div>
     </div>
-    <button id="restartButton" onclick="restartGame()">Restart</button>
+    <button id="restartButton" onclick="restartGame()">Reiniciar</button>
+
     <script>
         const animals = [
             { name: "dog", emoji: "🐶" }, { name: "cat", emoji: "🐱" },
@@ -160,7 +161,9 @@
                 matchedCards++;
                 firstCard.classList.add("matched");
                 secondCard.classList.add("matched");
-                playSound(firstCard.dataset.name);
+
+                // Reproduz o som correto do animal
+                playAnimalSound(firstCard.dataset.name);
 
                 if (currentPlayer === 1) {
                     player1Score += 10;
@@ -183,9 +186,11 @@
             }
         }
 
-        function playSound(animalName) {
+        function playAnimalSound(animalName) {
             const audio = new Audio(`sons/${animalName}.mp3`);
-            audio.play();
+            audio.play().catch(error => {
+                console.error("Erro ao reproduzir o som:", error);
+            });
         }
 
         function switchPlayer() {
@@ -205,25 +210,21 @@
         }
 
         function restartGame() {
-    matchedCards = 0;
-    player1Score = 0;
-    player2Score = 0;
-    firstCard = null;
-    secondCard = null;
-    currentPlayer = 1;
+            matchedCards = 0;
+            player1Score = 0;
+            player2Score = 0;
+            firstCard = null;
+            secondCard = null;
+            currentPlayer = 1;
 
-    // Reinicia o placar na tela
-    player1ScoreElement.textContent = player1Score;
-    player2ScoreElement.textContent = player2Score;
+            player1ScoreElement.textContent = player1Score;
+            player2ScoreElement.textContent = player2Score;
 
-    // Restaura a indicação de jogador ativo
-    player1Element.classList.add("active");
-    player2Element.classList.remove("active");
+            player1Element.classList.add("active");
+            player2Element.classList.remove("active");
 
-    // Embaralha e recria as cartas
-    shuffleCards();
-}
-
+            shuffleCards();
+        }
 
         shuffleCards();
     </script>
