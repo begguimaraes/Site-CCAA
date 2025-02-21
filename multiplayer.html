@@ -36,10 +36,10 @@
             font-weight: bold;
         }
         .card:nth-child(2n) {
-            background-color: #3498db; /* Azul */
+            background-color: #3498db;
         }
         .card:nth-child(2n+1) {
-            background-color: #e74c3c; /* Vermelho */
+            background-color: #e74c3c;
         }
         .card.flipped span {
             visibility: visible;
@@ -49,7 +49,7 @@
             visibility: hidden;
         }
         .card.matched {
-            background-color: #2ecc71; /* Verde */
+            background-color: #2ecc71;
             cursor: default;
         }
         .scoreboard {
@@ -87,14 +87,11 @@
             cursor: pointer;
             font-size: 18px;
         }
-
-        /* Responsividade */
         @media (max-width: 600px) {
             .game-board {
-                grid-template-columns: repeat(6, 60px); /* Mantém 6 cartas por linha */
+                grid-template-columns: repeat(6, 60px);
                 gap: 5px;
             }
-
             .card {
                 width: 60px;
                 height: 60px;
@@ -113,12 +110,12 @@
     <button id="restartButton" onclick="restartGame()">Restart</button>
     <script>
         const animals = [
-            { name: "Dog", emoji: "🐶" }, { name: "Cat", emoji: "🐱" },
-            { name: "Cow", emoji: "🐮" }, { name: "Lion", emoji: "🦁" },
-            { name: "Monkey", emoji: "🐵" }, { name: "Tiger", emoji: "🐯" },
-            { name: "Rabbit", emoji: "🐰" }, { name: "Mouse", emoji: "🐭" },
-            { name: "Chicken", emoji: "🐔" }, { name: "Frog", emoji: "🐸" },
-            { name: "Panda", emoji: "🐼" }, { name: "Penguin", emoji: "🐧" }
+            { name: "dog", emoji: "🐶" }, { name: "cat", emoji: "🐱" },
+            { name: "cow", emoji: "🐮" }, { name: "lion", emoji: "🦁" },
+            { name: "monkey", emoji: "🐵" }, { name: "tiger", emoji: "🐯" },
+            { name: "rabbit", emoji: "🐰" }, { name: "mouse", emoji: "🐭" },
+            { name: "chicken", emoji: "🐔" }, { name: "frog", emoji: "🐸" },
+            { name: "panda", emoji: "🐼" }, { name: "penguin", emoji: "🐧" }
         ];
 
         let cards = [...animals, ...animals];
@@ -143,7 +140,6 @@
                 card.classList.add("card");
                 card.dataset.name = animal.name;
                 card.innerHTML = `<span>${animal.emoji}</span>`;
-
                 card.addEventListener("click", () => {
                     if (!card.classList.contains("matched") && !card.classList.contains("flipped") && secondCard === null) {
                         card.classList.add("flipped");
@@ -164,7 +160,7 @@
                 matchedCards++;
                 firstCard.classList.add("matched");
                 secondCard.classList.add("matched");
-                speak(firstCard.dataset.name);
+                playSound(firstCard.dataset.name);
 
                 if (currentPlayer === 1) {
                     player1Score += 10;
@@ -187,6 +183,11 @@
             }
         }
 
+        function playSound(animalName) {
+            const audio = new Audio(`./sons/${animalName}.mp3`);
+            audio.play();
+        }
+
         function switchPlayer() {
             currentPlayer = currentPlayer === 1 ? 2 : 1;
             player1Element.classList.toggle("active");
@@ -196,30 +197,33 @@
         function checkEndGame() {
             if (matchedCards === animals.length) {
                 setTimeout(() => {
-                    if (player1Score > player2Score) {
-                        alert("Jogador 1 é o vencedor!");
-                    } else if (player2Score > player1Score) {
-                        alert("Jogador 2 é o vencedor!");
-                    } else {
-                        alert("Empate!");
-                    }
+                    if (player1Score > player2Score) alert("Jogador 1 é o vencedor!");
+                    else if (player2Score > player1Score) alert("Jogador 2 é o vencedor!");
+                    else alert("Empate!");
                 }, 500);
             }
         }
 
         function restartGame() {
-            matchedCards = 0;
-            player1Score = 0;
-            player2Score = 0;
-            firstCard = null;
-            secondCard = null;
-            currentPlayer = 1;
-            player1ScoreElement.textContent = player1Score;
-            player2ScoreElement.textContent = player2Score;
-            player1Element.classList.add("active");
-            player2Element.classList.remove("active");
-            shuffleCards();
-        }
+    matchedCards = 0;
+    player1Score = 0;
+    player2Score = 0;
+    firstCard = null;
+    secondCard = null;
+    currentPlayer = 1;
+
+    // Reinicia o placar na tela
+    player1ScoreElement.textContent = player1Score;
+    player2ScoreElement.textContent = player2Score;
+
+    // Restaura a indicação de jogador ativo
+    player1Element.classList.add("active");
+    player2Element.classList.remove("active");
+
+    // Embaralha e recria as cartas
+    shuffleCards();
+}
+
 
         shuffleCards();
     </script>
