@@ -3,181 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Memory Game - Modo Solo</title>
+    <title>Memory Game</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             text-align: center;
-            background: url('https://source.unsplash.com/1600x900/?animals') no-repeat center center fixed;
-            background-size: cover;
+            background: #7f8c8d;
             padding: 20px;
+            margin: 0;
         }
-        /* Efeito de escurecimento para melhor leitura */
-        body::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: -1;
-        }
+
         h1 {
             color: #fff;
             text-shadow: 1px 1px 2px #000;
-        }
-        .game-board {
-            display: grid;
-            grid-template-columns: repeat(6, 100px);
-            gap: 10px;
-            justify-content: center;
             margin-top: 20px;
         }
-        .card {
-            width: 100px;
-            height: 100px;
-            border: 2px solid #000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 30px;
-            cursor: pointer;
-            border-radius: 8px;
-            transition: transform 0.6s;
-            color: #fff;
-        }
-        .card.red {
-            background-color: #e74c3c;
-        }
-        .card.blue {
-            background-color: #3498db;
-        }
-        .card.matched {
-            background-color: #2ecc71;
-            cursor: default;
-        }
-        .score {
-            font-size: 24px;
-            margin-top: 10px;
-            font-weight: bold;
-            color: #fff;
-        }
-        #restartButton {
+
+        .menu {
             margin-top: 20px;
-            padding: 10px 20px;
-            background-color: #3498db;
-            color: white;
+        }
+
+        button {
+            display: block;
+            width: 200px;
+            margin: 10px auto;
+            padding: 10px;
             border: none;
             border-radius: 5px;
-            cursor: pointer;
             font-size: 18px;
+            cursor: pointer;
+            color: #fff;
         }
 
-        /* Responsividade */
-        @media (max-width: 600px) {
-            .game-board {
-                grid-template-columns: repeat(6, 60px); /* Mantém 6 cartas por linha */
-                gap: 5px;
-            }
+        button.one-player {
+            background-color: #3498db;
+        }
 
-            .card {
-                width: 60px;
-                height: 60px;
-                font-size: 20px;
-            }
+        button.two-players {
+            background-color: #e74c3c;
         }
     </style>
 </head>
 <body>
-    <h1>Memory Game - Solo Mode</h1>
-    <div class="game-board" id="gameBoard"></div>
-    <div class="score" id="score">Pontos: 0</div>
-    <button id="restartButton" onclick="restartGame()">Restart</button>
+    <h1>Memory Game</h1>
+    <div class="menu">
+        <button class="one-player" onclick="startSoloMode()">One Player</button>
+        <button class="two-players" onclick="startMultiplayerMode()">Two Players</button>
+    </div>
     <script>
-        const animals = [
-            { name: "Dog", emoji: "🐶" }, { name: "Cat", emoji: "🐱" },
-            { name: "Cow", emoji: "🐮" }, { name: "Lion", emoji: "🦁" },
-            { name: "Monkey", emoji: "🐵" }, { name: "Tiger", emoji: "🐯" },
-            { name: "Rabbit", emoji: "🐰" }, { name: "Mouse", emoji: "🐭" },
-            { name: "Chicken", emoji: "🐔" }, { name: "Frog", emoji: "🐸" },
-            { name: "Panda", emoji: "🐼" }, { name: "Penguin", emoji: "🐧" }
-        ];
-
-        let cards = [...animals, ...animals];
-        let matchedCards = 0;
-        let firstCard = null;
-        let secondCard = null;
-        let score = 0;
-
-        const gameBoard = document.getElementById("gameBoard");
-        const scoreElement = document.getElementById("score");
-
-        function shuffleCards() {
-            cards.sort(() => Math.random() - 0.5);
-            gameBoard.innerHTML = "";
-            cards.forEach((animal, index) => {
-                const card = document.createElement("div");
-                card.classList.add("card", index % 2 === 0 ? "red" : "blue");
-                card.dataset.name = animal.name;
-                card.innerHTML = `<span style="visibility: hidden; color: #fff;">${animal.emoji}</span>`;
-
-                card.addEventListener("click", () => {
-                    if (!card.classList.contains("matched") && secondCard === null) {
-                        card.firstChild.style.visibility = "visible";
-                        if (!firstCard) {
-                            firstCard = card;
-                        } else {
-                            secondCard = card;
-                            checkMatch();
-                        }
-                    }
-                });
-                gameBoard.appendChild(card);
-            });
+        function startSoloMode() {
+            window.location.href = "./modo_solo.html";
         }
 
-        function playAnimalSound(animalName) {
-            const audio = new Audio(`sons/${animalName}.mp3`);
-            audio.load();
-            audio.play().catch(error => {
-                console.error("Erro ao reproduzir o som:", error);
-            });
+        function startMultiplayerMode() {
+            window.location.href = "./modo_multiplayer.html";
         }
-
-        function checkMatch() {
-            if (firstCard.dataset.name === secondCard.dataset.name) {
-                matchedCards++;
-                score += 10;
-                scoreElement.textContent = `Pontos: ${score}`;
-                firstCard.classList.add("matched");
-                secondCard.classList.add("matched");
-
-                playAnimalSound(firstCard.dataset.name);
-
-                firstCard = null;
-                secondCard = null;
-                if (matchedCards === cards.length / 2) {
-                    alert("Parabéns! Você encontrou todos os pares!");
-                }
-            } else {
-                setTimeout(() => {
-                    firstCard.firstChild.style.visibility = "hidden";
-                    secondCard.firstChild.style.visibility = "hidden";
-                    firstCard = null;
-                    secondCard = null;
-                }, 1000);
-            }
-        }
-
-        function restartGame() {
-            matchedCards = 0;
-            score = 0;
-            scoreElement.textContent = "Pontos: 0";
-            shuffleCards();
-        }
-
-        shuffleCards();
     </script>
 </body>
 </html>
